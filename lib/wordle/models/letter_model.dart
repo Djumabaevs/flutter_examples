@@ -28,4 +28,26 @@ class Letter extends Equatable {
         return correctColor;
     }
   }
+
+  Color get borderColor {
+    switch (status) {
+      case LetterStatus.initial:
+        return Colors.grey;
+      default:
+        return Colors.transparent;
+    }
+  }
+
+  Letter copyWith({
+    String? val,
+    LetterStatus? status,
+  }) {
+    return Letter(
+      val: val ?? this.val,
+      status: status ?? this.status,
+    );
+  }
+
+  @override
+  List<Object?> get props => [val, status];
 }
