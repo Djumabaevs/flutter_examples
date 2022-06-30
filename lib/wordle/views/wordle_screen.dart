@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_examples/app/app_colors.dart';
 import 'package:flutter_examples/wordle/data/word_list.dart';
 import 'package:flutter_examples/wordle/wordle.dart';
 
@@ -103,5 +104,46 @@ class _WordleScreenState extends State<WordleScreen> {
     }
   }
 
-  void _checkIfWinOrLoss() {}
+  void _checkIfWinOrLoss() {
+    if (_currentWord!.wordString == _solution.wordString) {
+      _gameStatus = GameStatus.won;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          dismissDirection: DismissDirection.none,
+          duration: const Duration(days: 1),
+          backgroundColor: correctColor,
+          content: const Text(
+            'You won',
+            style: TextStyle(color: Colors.white),
+          ),
+          action: SnackBarAction(
+            onPressed: _restart,
+            textColor: Colors.white,
+            label: 'New Game',
+          ),
+        ),
+      );
+    } else if (_currentWordIndex + 1 >= _board.length) {
+      _gameStatus = GameStatus.lost;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          dismissDirection: DismissDirection.none,
+          duration: const Duration(days: 1),
+          backgroundColor: Colors.redAccent[200],
+          content: Text(
+            'You lost! Solution: ${_solution.wordString}',
+            style: TextStyle(color: Colors.white),
+          ),
+          action: SnackBarAction(
+            onPressed: _restart,
+            textColor: Colors.white,
+            label: 'New Game',
+          ),
+        ),
+      );
+    } else {
+      _gameStatus = GameStatus.playing;
+    }
+    _currentWordIndex += 1;
+  }
 }
