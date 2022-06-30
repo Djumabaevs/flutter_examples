@@ -37,6 +37,20 @@ class _WordleScreenState extends State<WordleScreen> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        title: const Text(
+          'WORDLE',
+          style: TextStyle(
+            fontSize: 36,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 4,
+          ),
+        ),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Board(board: _board),
+        ],
       ),
     );
   }
