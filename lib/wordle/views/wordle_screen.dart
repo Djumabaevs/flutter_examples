@@ -27,9 +27,11 @@ class _WordleScreenState extends State<WordleScreen> {
   Word? get _currentWord =>
       _currentWordIndex < _board.length ? _board[_currentWordIndex] : null;
 
-  final Word _solution = Word.fromString(
+  Word _solution = Word.fromString(
     fiveLetterWords[Random().nextInt(fiveLetterWords.length)].toUpperCase(),
   );
+
+  final Set<Letter> _keyboardLetters = {};
 
   @override
   Widget build(BuildContext context) {
@@ -145,5 +147,23 @@ class _WordleScreenState extends State<WordleScreen> {
       _gameStatus = GameStatus.playing;
     }
     _currentWordIndex += 1;
+  }
+
+  void _restart() {
+    setState(() {
+      _gameStatus = GameStatus.playing;
+      _currentWordIndex = 0;
+      _board
+        ..clear()
+        ..addAll(
+          List.generate(
+            6,
+            (_) => Word(letters: List.generate(5, (_) => Letter.empty())),
+          ),
+        );
+      _solution = Word.fromString(
+        fiveLetterWords[Random().nextInt(fiveLetterWords.length)].toUpperCase(),
+      );
+    });
   }
 }
