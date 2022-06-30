@@ -22,25 +22,27 @@ class Keyboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: _qwerty.map(
-        (keyRow) => Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: keyRow.map(
-            (letter) {
-              if (letter == 'DEL') {
-                return _KeyboardButton.delete(onTap: onDeleteTapped);
-              } else if (letter == 'ENTER') {
-                return _KeyboardButton.enter(onTap: onEnterTapped);
-              }
-              return _KeyboardButton(
-                onTap: () => onKeyTapped(letter),
-                letter: letter,
-                backgroundColor: Colors.grey,
-              );
-            },
-          ).toList(),
-        ),
-      ),
+      children: _qwerty
+          .map(
+            (keyRow) => Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: keyRow.map(
+                (letter) {
+                  if (letter == 'DEL') {
+                    return _KeyboardButton.delete(onTap: onDeleteTapped);
+                  } else if (letter == 'ENTER') {
+                    return _KeyboardButton.enter(onTap: onEnterTapped);
+                  }
+                  return _KeyboardButton(
+                    onTap: () => onKeyTapped(letter),
+                    letter: letter,
+                    backgroundColor: Colors.grey,
+                  );
+                },
+              ).toList(),
+            ),
+          )
+          .toList(),
     );
   }
 }
@@ -83,6 +85,30 @@ class _KeyboardButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ();
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 3.0,
+        horizontal: 2.0,
+      ),
+      child: Material(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(4),
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
+            height: height,
+            width: width,
+            alignment: Alignment.center,
+            child: Text(
+              letter,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
