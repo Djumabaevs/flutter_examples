@@ -54,12 +54,54 @@ class _WordleScreenState extends State<WordleScreen> {
             height: 80,
           ),
           Keyboard(
-            onKeyTapped: onKeyTapped,
-            onDeleteTapped: onDeleteTapped,
-            onEnterTapped: onEnterTapped,
+            onKeyTapped: _onKeyTapped,
+            onDeleteTapped: _onDeleteTapped,
+            onEnterTapped: _onEnterTapped,
           )
         ],
       ),
     );
   }
+
+  void _onKeyTapped(String val) {
+    if (_gameStatus == GameStatus.playing) {
+      setState(() => _currentWord?.addLetter(val));
+    }
+  }
+
+  void _onDeleteTapped() {
+    if (_gameStatus == GameStatus.playing) {
+      setState(() => _currentWord?.removeLetter());
+    }
+  }
+
+  void _onEnterTapped() {
+    if (_gameStatus == GameStatus.playing &&
+        _currentWord != null &&
+        !_currentWord!.letters.contains(Letter.empty())) {
+      _gameStatus = GameStatus.submitting;
+
+      for (var i = 0; i < _currentWord!.letters.length; i++) {
+        final currentWordLetter = _currentWord!.letters[i];
+        final currentSolutionLetter = _solution.letters[i];
+
+        setState(() {
+          if (currentWordLetter == currentSolutionLetter) {
+            _currentWord!.letters[i] =
+                currentWordLetter.copyWith(status: LetterStatus.correct);
+          } else if (_solution.letters.contains(currentWordLetter)) {
+            _currentWord!.letters[i] =
+                currentWordLetter.copyWith(status: LetterStatus.inWord);
+          } else {
+            _currentWord!.letters[i] =
+                currentWordLetter.copyWith(status: LetterStatus.notInWord);
+          }
+        });
+      }
+
+      _checkIfWinOrLoss();
+    }
+  }
+
+  void _checkIfWinOrLoss() {}
 }
